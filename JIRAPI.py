@@ -352,20 +352,20 @@ class JIRAPI():
 
    #
    # get all Git Information from a JIRA DEFECT
-   # thanks to Martin Doedtmann and Kai Ehrhart from AMB
+   #
    def getGitInformationFromComments(self, issue='DEFECT-8000'):
       if self.srv:
          issue = self.srv.issue(issue, fields='comment')
          #print(issue.fields.status)
          for comment in issue.fields.comment.comments:
-            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "svc_jira-gitlab":
+            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "my_special_user":
                git_info = comment.body[(comment.body.find("a commit of ") + len("a commit of ")):]
 
       return git_info
 
    #
    # get a List of Modules from JIRA DEFECT where gitlab changes (which Modules participate on that DEFECT)
-   # thanks to Martin Doedtmann and Kai Ehrhart from AMB
+   #
    def getModules(self, issue_with_key):
       liste = []
       if self.srv:
@@ -373,7 +373,7 @@ class JIRAPI():
          #print(issue.fields.status)
 
          for comment in issue.fields.comment.comments:
-            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "svc_jira-gitlab":
+            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "my_special_user":
                git_info = comment.body[(comment.body.find("a commit of ") + len("a commit of ")):]
                module = git_info[(git_info.find("/") + 1):git_info.rfind("|")]
                liste.append(module)
@@ -384,14 +384,14 @@ class JIRAPI():
 
    #
    # get a List of Commit ID from JIRA ISSUE / DEFECT
-   # thanks to Martin Doedtmann and Kai Ehrhart from AMB
+   #
    def getCommitIDs(self, issue_with_key):
       liste = []
       if self.srv:
          issue = self.srv.issue(issue_with_key, fields='comment')
          #print(issue.fields.status)
          for comment in issue.fields.comment.comments:
-            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "svc_jira-gitlab":
+            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "my_special_user":
                git_info = comment.body[(comment.body.find("a commit of ") + len("a commit of ")):]
                commit_url = git_info[git_info.index(self.gitlab_url):git_info.index("]")]
                commit_id = commit_url[(commit_url.rfind("/") + 1):]
@@ -410,7 +410,7 @@ class JIRAPI():
          issue = self.srv.issue(issue_with_key, fields='comment')
 
          for comment in issue.fields.comment.comments:
-            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "svc_jira-gitlab":
+            if comment.updateAuthor.displayName == "gitlab" or comment.updateAuthor.displayName == "my_special_user":
                git_info = comment.body[(comment.body.find("a commit of ") + len("a commit of ")):]
                module = git_info[(git_info.find("/") + 1):git_info.rfind("|")]
                commit_url = git_info[git_info.index(self.gitlab_url):git_info.index("]")]
